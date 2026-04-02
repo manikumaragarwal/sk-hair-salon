@@ -1,52 +1,730 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SK Hair Salon | Excellence in Haircare</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: 'Georgia', serif;
-      background: #fdfcf9;
-      color: #333;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      text-align: center;
-    }
-    h1 {
-      font-size: 4rem;
-      margin: 0;
-      color: #1a1a1a;
-      letter-spacing: 2px;
-    }
-    p {
-      font-size: 1.2rem;
-      color: #666;
-      max-width: 600px;
-      margin: 20px 0;
-    }
-    .cta {
-      padding: 15px 40px;
-      border: 1px solid #1a1a1a;
-      background: transparent;
-      text-transform: uppercase;
-      letter-spacing: 2px;
-      cursor: pointer;
-      transition: 0.3s;
-    }
-    .cta:hover {
-      background: #1a1a1a;
-      color: #fff;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SK Hair Salon | Digital Distinction 2026</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        /* === VIEWPORT FITTING: MANDATORY BASE STYLES === */
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            background: #0c0c0c;
+            color: #fdfbf7;
+            font-family: 'Montserrat', sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+        html {
+            scroll-snap-type: y mandatory;
+            scroll-behavior: smooth;
+        }
+        .slide {
+            width: 100vw;
+            height: 100vh;
+            height: 100dvh;
+            overflow: hidden;
+            scroll-snap-align: start;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            box-sizing: border-box;
+        }
+        .slide-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            max-height: 100%;
+            overflow: hidden;
+            padding: var(--slide-padding);
+            position: relative;
+            z-index: 2;
+        }
+        :root {
+            --bg-primary: #0c0c0c;
+            --text-primary: #fdfbf7;
+            --text-secondary: #9a9a9a;
+            --accent-gold: #c5a059;
+            --accent-gold-soft: rgba(197, 160, 89, 0.2);
+            --accent-emerald: #1a3c34;
+            
+            --title-size: clamp(2.5rem, 8vw, 5.5rem);
+            --h2-size: clamp(2rem, 5vw, 3.5rem);
+            --h3-size: clamp(1.25rem, 2.5vw, 1.85rem);
+            --body-size: clamp(0.95rem, 1.5vw, 1.15rem);
+            --small-size: clamp(0.75rem, 1vw, 0.9rem);
+            
+            --slide-padding: clamp(2rem, 10vw, 8rem);
+            --content-gap: clamp(1.5rem, 4vw, 4rem);
+            --element-gap: clamp(0.75rem, 2vw, 2rem);
+            
+            --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        /* === BACKGROUND SHAPES === */
+        .background-shapes {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            filter: blur(140px);
+            opacity: 0.35;
+            pointer-events: none;
+        }
+        .shape {
+            position: absolute;
+            border-radius: 50%;
+            animation: float 30s infinite alternate ease-in-out;
+        }
+        .shape-1 { width: 45vw; height: 45vw; background: var(--accent-gold); top: -15%; right: -10%; animation-delay: -3s; }
+        .shape-2 { width: 40vw; height: 40vw; background: var(--accent-emerald); bottom: -15%; left: -10%; animation-delay: -7s; }
+        .shape-3 { width: 35vw; height: 35vw; background: #222; top: 25%; left: 20%; animation-delay: -10s; opacity: 0.8; }
+
+        @keyframes float { 
+            0% { transform: translate(0, 0) rotate(0deg) scale(1); }
+            100% { transform: translate(60px, 40px) rotate(10deg) scale(1.05); }
+        }
+
+        /* === TYPOGRAPHY === */
+        h1, h2, .display-font {
+            font-family: 'Playfair Display', serif;
+            font-weight: 600;
+            line-height: 1.05;
+            margin: 0;
+            color: var(--text-primary);
+        }
+        h3 { font-family: 'Playfair Display', serif; font-weight: 600; font-size: var(--h3-size); margin: 0 0 0.5rem 0; letter-spacing: 0.02em; }
+        em { font-style: italic; color: var(--accent-gold); font-weight: 400; }
+        
+        .label {
+            text-transform: uppercase;
+            letter-spacing: 0.4em;
+            font-size: var(--small-size);
+            color: var(--accent-gold);
+            margin-bottom: var(--element-gap);
+            display: block;
+            font-weight: 600;
+        }
+
+        /* === ANIMATIONS === */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 1.5s var(--ease-out-expo), transform 1.5s var(--ease-out-expo);
+        }
+        .visible .reveal {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .stagger-1 { transition-delay: 0.1s; }
+        .stagger-2 { transition-delay: 0.2s; }
+        .stagger-3 { transition-delay: 0.3s; }
+        .stagger-4 { transition-delay: 0.4s; }
+        .stagger-5 { transition-delay: 0.5s; }
+        .stagger-6 { transition-delay: 0.6s; }
+
+        /* === LAYOUT COMPONENTS === */
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--content-gap);
+            align-items: center;
+        }
+
+        .three-column {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: var(--content-gap);
+        }
+
+        .feature-list {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .feature-item {
+            display: flex;
+            gap: 1.5rem;
+            align-items: flex-start;
+        }
+
+        .feature-icon {
+            width: 1px;
+            height: 60px;
+            background: linear-gradient(to bottom, var(--accent-gold), transparent);
+            margin-top: 0;
+            flex-shrink: 0;
+        }
+
+        .feature-text p {
+            margin: 0;
+            font-size: var(--body-size);
+            color: var(--text-secondary);
+            line-height: 1.7;
+            font-weight: 300;
+        }
+
+        /* === ISSUE CARDS === */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.25rem;
+        }
+
+        .issue-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(197, 160, 89, 0.1);
+            padding: 1.5rem;
+            border-radius: 4px;
+            transition: border 0.4s ease;
+        }
+        .issue-card:hover {
+            border-color: var(--accent-gold);
+        }
+
+        .issue-number {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            color: var(--accent-gold);
+            margin-bottom: 0.5rem;
+            opacity: 0.6;
+        }
+
+        .issue-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.4rem;
+            color: var(--text-primary);
+            margin: 0 0 0.5rem 0;
+            font-weight: 500;
+        }
+
+        .issue-description {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            margin: 0;
+            line-height: 1.5;
+            font-weight: 300;
+        }
+
+        /* === SOLUTION CARDS === */
+        .solution-card {
+            background: var(--accent-gold-soft);
+            border-left: 3px solid var(--accent-gold);
+            padding: 1.5rem;
+            border-radius: 0 4px 4px 0;
+            transition: transform 0.4s ease;
+        }
+        .solution-card:hover {
+            transform: translateX(10px);
+        }
+
+        .solution-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.4rem;
+            color: var(--text-primary);
+            margin: 0 0 0.5rem 0;
+            font-weight: 600;
+        }
+
+        /* === STAT CARDS === */
+        .stat-card {
+            padding: 2.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            background: rgba(255, 255, 255, 0.01);
+            border-radius: 0;
+            text-align: center;
+            transition: background 0.4s ease;
+        }
+        .stat-card:hover {
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .stat-value {
+            font-family: 'Playfair Display', serif;
+            font-size: var(--h2-size);
+            color: var(--accent-gold);
+            display: block;
+            margin-bottom: 0.75rem;
+        }
+
+        .stat-label {
+            font-size: var(--small-size);
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            color: var(--text-primary);
+            display: block;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        /* === TABLE STYLES === */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        th {
+            text-align: left;
+            padding: 1.25rem;
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            border-bottom: 1px solid var(--accent-gold);
+            color: var(--accent-gold);
+            font-weight: 400;
+        }
+
+        td {
+            padding: 1.25rem;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            font-size: var(--body-size);
+            color: var(--text-secondary);
+            font-weight: 300;
+        }
+
+        /* === DIVIDERS === */
+        .divider {
+            width: 1px;
+            height: 100px;
+            background: linear-gradient(to bottom, transparent, var(--accent-gold), transparent);
+            margin: var(--element-gap) 0;
+        }
+
+        .horizontal-divider {
+            height: 1px;
+            width: 120px;
+            background: var(--accent-gold);
+            margin: var(--element-gap) 0;
+        }
+
+        /* === CTA BUTTON === */
+        .cta-button {
+            display: inline-block;
+            padding: 1.25rem 3.5rem;
+            border: 1px solid var(--accent-gold);
+            color: var(--accent-gold);
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 0.3em;
+            font-size: 0.8rem;
+            margin-top: var(--content-gap);
+            transition: all 0.5s var(--ease-out-expo);
+            cursor: pointer;
+            background: transparent;
+            font-weight: 600;
+        }
+        .cta-button:hover {
+            background: var(--accent-gold);
+            color: #0c0c0c;
+            letter-spacing: 0.4em;
+        }
+
+        /* === NAVIGATION === */
+        .nav-dots {
+            position: fixed;
+            right: 40px;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        .dot {
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.15);
+            cursor: pointer;
+            transition: all 0.4s ease;
+        }
+        .dot.active {
+            background: var(--accent-gold);
+            transform: scale(2.5);
+        }
+
+        /* === RESPONSIVE === */
+        @media (max-width: 900px) {
+            .two-column, .three-column, .grid-container { grid-template-columns: 1fr; }
+            :root { --slide-padding: 2.5rem; }
+        }
+    </style>
 </head>
 <body>
-  <h1>SK Hair Salon</h1>
-  <p>Coming Soon | Defining the standard of modern luxury and hair artistry.</p>
-  <button class="cta">Book Consultation</button>
+
+    <div class="nav-dots">
+        <div class="dot active" data-slide="0"></div>
+        <div class="dot" data-slide="1"></div>
+        <div class="dot" data-slide="2"></div>
+        <div class="dot" data-slide="3"></div>
+        <div class="dot" data-slide="4"></div>
+        <div class="dot" data-slide="5"></div>
+        <div class="dot" data-slide="6"></div>
+        <div class="dot" data-slide="7"></div>
+        <div class="dot" data-slide="8"></div>
+        <div class="dot" data-slide="9"></div>
+    </div>
+
+    <div class="background-shapes">
+        <div class="shape shape-1"></div>
+        <div class="shape shape-2"></div>
+        <div class="shape shape-3"></div>
+    </div>
+
+    <!-- Slide 1: Title -->
+    <section class="slide" id="slide-0">
+        <div class="slide-content" style="text-align: center; align-items: center;">
+            <span class="label reveal">Digital Distinction 2026</span>
+            <div class="divider reveal stagger-1"></div>
+            <h1 class="reveal stagger-2">SK Hair Salon: <br>The Art of <em>Digital Authority</em></h1>
+            <p class="reveal stagger-3" style="max-width: 800px; color: var(--text-secondary); margin-top: 2.5rem; font-weight: 300; line-height: 1.8;">Beyond mere posting lies the realm of brand legacy. We are here to transform SK Hair Salon from a local secret into a digital masterpiece—where every frame radiates luxury and every click converts to prestige.</p>
+        </div>
+    </section>
+
+    <!-- Slide 2: The Audit - Part 1 -->
+    <section class="slide" id="slide-1">
+        <div class="slide-content">
+            <span class="label reveal">The Disconnect</span>
+            <h2 class="reveal stagger-1">The <em>Premium</em> Paradox (1/2)</h2>
+            <div class="horizontal-divider reveal stagger-2"></div>
+            <p class="reveal stagger-3" style="color: var(--text-secondary); margin-bottom: 2.5rem; font-weight: 300;">Your artistry is world-class; your digital presence is silent. We've identified 10 critical barriers to your brand's authority:</p>
+            
+            <div class="grid-container reveal stagger-4">
+                <div class="issue-card">
+                    <div class="issue-number">01</div>
+                    <div class="issue-title">Visual Anarchy</div>
+                    <div class="issue-description">A lack of chromatic identity dilutes brand recall. Your feed feels like a collection of moments rather than a unified brand.</div>
+                </div>
+                <div class="issue-card">
+                    <div class="issue-number">02</div>
+                    <div class="issue-title">Algorithmic Silence</div>
+                    <div class="issue-description">Inconsistent posting tells the algorithm your brand is dormant. You're losing reach to more active, lesser competitors.</div>
+                </div>
+                <div class="issue-card">
+                    <div class="issue-number">03</div>
+                    <div class="issue-title">Narrative Fragmentation</div>
+                    <div class="issue-description">Content lacks a cohesive "Red Thread." There is no story guiding the viewer from curiosity to booking.</div>
+                </div>
+                <div class="issue-card">
+                    <div class="issue-number">04</div>
+                    <div class="issue-title">Untapped Social Proof</div>
+                    <div class="issue-description">Static highlights don't capture the pulse of the salon. Your best work is buried in history.</div>
+                </div>
+                <div class="issue-card">
+                    <div class="issue-number">05</div>
+                    <div class="issue-title">Technical Friction</div>
+                    <div class="issue-description">Low-fidelity video and poor lighting clash with the "Luxury" promise of your services.</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Slide 3: The Audit - Part 2 -->
+    <section class="slide" id="slide-2">
+        <div class="slide-content">
+            <span class="label reveal">The Disconnect</span>
+            <h2 class="reveal stagger-1">The <em>Premium</em> Paradox (2/2)</h2>
+            <div class="horizontal-divider reveal stagger-2"></div>
+            <p class="reveal stagger-3" style="color: var(--text-secondary); margin-bottom: 2.5rem; font-weight: 300;">The remaining 5 friction points preventing your digital dominance:</p>
+            
+            <div class="grid-container reveal stagger-4">
+                <div class="issue-card">
+                    <div class="issue-number">06</div>
+                    <div class="issue-title">Aural Disconnect</div>
+                    <div class="issue-description">Videos are missing the emotional layer of storytelling. You're showing hair, but not the feeling of transformation.</div>
+                </div>
+                <div class="issue-card">
+                    <div class="issue-number">07</div>
+                    <div class="issue-title">Conversion Drought</div>
+                    <div class="issue-description">Captions are descriptive, not strategic. They fail to provoke action or build intellectual authority.</div>
+                </div>
+                <div class="issue-card">
+                    <div class="issue-number">08</div>
+                    <div class="issue-title">Ghost Town Presence</div>
+                    <div class="issue-description">Zero proactive engagement. On Instagram, silence is a sign of a dying brand. We need a pulse.</div>
+                </div>
+                <div class="issue-card">
+                    <div class="issue-number">09</div>
+                    <div class="issue-title">Brand Dilution</div>
+                    <div class="issue-description">Inconsistent fonts and layouts make the brand feel amateur. Luxury is found in the relentless details.</div>
+                </div>
+                <div class="issue-card">
+                    <div class="issue-number">10</div>
+                    <div class="issue-title">Creative Stagnation</div>
+                    <div class="issue-description">Following trends instead of setting them. To be a leader, you must command the creative conversation.</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Slide 4: The Strategy - Part 1 -->
+    <section class="slide" id="slide-3">
+        <div class="slide-content">
+            <span class="label reveal">The Blueprint</span>
+            <h2 class="reveal stagger-1">The <em>Mastery</em> Protocol (1/2)</h2>
+            <div class="horizontal-divider reveal stagger-2"></div>
+            <p class="reveal stagger-3" style="color: var(--text-secondary); margin-bottom: 2.5rem; font-weight: 300;">A surgical approach to restoring your brand's digital health:</p>
+            
+            <div class="reveal stagger-4">
+                <div class="solution-card" style="margin-bottom: 1rem;">
+                    <div class="solution-title">1. Chromatic Identity</div>
+                    <p style="color: var(--text-secondary); margin: 0; font-weight: 300;">A bespoke "Midnight & Gold" visual system. Every pixel will scream SK Hair Salon before the viewer even sees the logo.</p>
+                </div>
+                <div class="solution-card" style="margin-bottom: 1rem;">
+                    <div class="solution-title">2. Relentless Resonance</div>
+                    <p style="color: var(--text-secondary); margin: 0; font-weight: 300;">A 4x daily posting protocol. We don't just post; we dominate the algorithm's attention span.</p>
+                </div>
+                <div class="solution-card" style="margin-bottom: 1rem;">
+                    <div class="solution-title">3. Curation Protocol</div>
+                    <p style="color: var(--text-secondary); margin: 0; font-weight: 300;">Intentional grid sequencing. We turn your profile into a high-end digital lookbook that flows with purpose.</p>
+                </div>
+                <div class="solution-card" style="margin-bottom: 1rem;">
+                    <div class="solution-title">4. Portfolio Mastery</div>
+                    <p style="color: var(--text-secondary); margin: 0; font-weight: 300;">20+ Curated Highlights. We'll archive your legacy and showcase your mastery in easily digestible, cinematic chapters.</p>
+                </div>
+                <div class="solution-card">
+                    <div class="solution-title">5. Studio Standards</div>
+                    <p style="color: var(--text-secondary); margin: 0; font-weight: 300;">Cinematic 4K production. We bring professional lighting and multi-angle shooting to every transformation.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Slide 5: The Strategy - Part 2 -->
+    <section class="slide" id="slide-4">
+        <div class="slide-content">
+            <span class="label reveal">The Blueprint</span>
+            <h2 class="reveal stagger-1">The <em>Mastery</em> Protocol (2/2)</h2>
+            <div class="horizontal-divider reveal stagger-2"></div>
+            <p class="reveal stagger-3" style="color: var(--text-secondary); margin-bottom: 2.5rem; font-weight: 300;">Completing the transformation with intelligence and intent:</p>
+            
+            <div class="reveal stagger-4">
+                <div class="solution-card" style="margin-bottom: 1rem;">
+                    <div class="solution-title">6. Editorial Storytelling</div>
+                    <p style="color: var(--text-secondary); margin: 0; font-weight: 300;">Scripts that sell the "Feeling." We focus on the emotional payoff of your artistry, not just the technical steps.</p>
+                </div>
+                <div class="solution-card" style="margin-bottom: 1rem;">
+                    <div class="solution-title">7. High-Conversion Copy</div>
+                    <p style="color: var(--text-secondary); margin: 0; font-weight: 300;">Captions written by experts. We use psychological triggers to turn readers into confirmed appointments.</p>
+                </div>
+                <div class="solution-card" style="margin-bottom: 1rem;">
+                    <div class="solution-title">8. Intelligent Intimacy</div>
+                    <p style="color: var(--text-secondary); margin: 0; font-weight: 300;">n8n-powered community building. AI handles the scale; our strategy keeps it human. We build relationships while you work.</p>
+                </div>
+                <div class="solution-card" style="margin-bottom: 1rem;">
+                    <div class="solution-title">9. The Unified Aesthetic</div>
+                    <p style="color: var(--text-secondary); margin: 0; font-weight: 300;">Rigid adherence to brand guidelines. Every Story, Reel, and DM will reflect the highest standard of luxury.</p>
+                </div>
+                <div class="solution-card">
+                    <div class="solution-title">10. Trend Leadership</div>
+                    <p style="color: var(--text-secondary); margin: 0; font-weight: 300;">Predictive creative direction. We analyze global trends and adapt them to your brand first.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Slide 6: The Production Framework -->
+    <section class="slide" id="slide-5">
+        <div class="slide-content">
+            <span class="label reveal">Production</span>
+            <h2 class="reveal stagger-1">Cinematic <em>Artistry</em></h2>
+            <div class="horizontal-divider reveal stagger-2"></div>
+            <p class="reveal stagger-3" style="color: var(--text-secondary); margin-bottom: 3rem; font-weight: 300; max-width: 900px;">We don't just film hair; we capture the soul of the style. Our production process mirrors the precision of your shears.</p>
+            
+            <div class="two-column reveal stagger-4">
+                <div>
+                    <h3 style="color: var(--accent-gold); margin-bottom: 1.5rem;">The Editorial Formula</h3>
+                    <p style="color: var(--text-secondary); line-height: 1.8; font-weight: 300;">Each Reel is a micro-film. We utilize the 2-Second Cut Rule to maintain dopamine-driven retention, paired with custom-mastered audio that creates an immersive, high-end atmosphere. This isn't content; it's a digital experience.</p>
+                </div>
+                <div class="feature-list">
+                    <div class="feature-item">
+                        <div class="feature-icon"></div>
+                        <div class="feature-text">
+                            <h3>Vogue-Style Lighting</h3>
+                            <p>Studio-grade setups in the salon to ensure every highlight and texture is captured with perfect clarity.</p>
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon"></div>
+                        <div class="feature-text">
+                            <h3>Macro Precision</h3>
+                            <p>Extreme close-ups of technique and product. We showcase the "Why" behind the "Wow."</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Slide 7: The Content Ecosystem -->
+    <section class="slide" id="slide-6">
+        <div class="slide-content">
+            <span class="label reveal">Execution</span>
+            <h2 class="reveal stagger-1">The Pulse of <em>Prestige</em></h2>
+            <div class="horizontal-divider reveal stagger-2"></div>
+            <p class="reveal stagger-3" style="color: var(--text-secondary); margin-bottom: 2rem; font-weight: 300;">A relentless 4x daily rhythm that ensures your brand is inescapable:</p>
+            
+            <div class="reveal stagger-4">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Moment</th>
+                            <th>Narrative Type</th>
+                            <th>Strategic Goal</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><strong>09:00 AM</strong></td><td>The Daily Insight</td><td>Position as an Industry Authority</td></tr>
+                        <tr><td><strong>01:00 PM</strong></td><td>The Transformation</td><td>Hard Conversion & Social Proof</td></tr>
+                        <tr><td><strong>05:00 PM</strong></td><td>Behind the Velvet Rope</td><td>Build Loyalty & Authenticity</td></tr>
+                        <tr><td><strong>09:00 PM</strong></td><td>The Evening Aesthetic</td><td>Algorithm Favor & Retention</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- Slide 8: The Engagement Engine -->
+    <section class="slide" id="slide-7">
+        <div class="slide-content">
+            <span class="label reveal">Innovation</span>
+            <h2 class="reveal stagger-1">Intelligent <em>Intimacy</em></h2>
+            <div class="horizontal-divider reveal stagger-2"></div>
+            <p class="reveal stagger-3" style="color: var(--text-secondary); margin-bottom: 3rem; font-weight: 300; max-width: 900px;">True luxury is personalized. We use cutting-edge n8n workflows to ensure no client query goes unanswered and no fan goes ignored.</p>
+            
+            <div class="two-column reveal stagger-4">
+                <div>
+                    <h3 style="color: var(--accent-gold); margin-bottom: 1.5rem;">The AI Concierge</h3>
+                    <p style="color: var(--text-secondary); line-height: 1.8; font-weight: 300;">Our automated workflows act as your digital salon manager. They handle the heavy lifting of engagement—responding to comments and nurturing DM leads—with the grace and tone of a high-end concierge service.</p>
+                </div>
+                <div class="three-column">
+                    <div class="stat-card" style="padding: 1.5rem;">
+                        <span class="stat-value" style="font-size: 2rem;">24/7</span>
+                        <span class="stat-label">Response</span>
+                    </div>
+                    <div class="stat-card" style="padding: 1.5rem;">
+                        <span class="stat-value" style="font-size: 2rem;">20+</span>
+                        <span class="stat-label">Daily Reach</span>
+                    </div>
+                    <div class="stat-card" style="padding: 1.5rem;">
+                        <span class="stat-value" style="font-size: 2rem;">100%</span>
+                        <span class="stat-label">Capture</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Slide 9: The Deliverables -->
+    <section class="slide" id="slide-8">
+        <div class="slide-content">
+            <span class="label reveal">The Investment</span>
+            <h2 class="reveal stagger-1">The <em>Asset</em> Suite</h2>
+            <div class="horizontal-divider reveal stagger-2"></div>
+            <p class="reveal stagger-3" style="color: var(--text-secondary); margin-bottom: 3rem; font-weight: 300;">Your monthly subscription to digital dominance includes:</p>
+            
+            <div class="three-column reveal stagger-4">
+                <div class="stat-card">
+                    <span class="stat-value">20</span>
+                    <span class="stat-label">Cinematic Films</span>
+                    <p style="font-size: 0.9rem; color: var(--text-secondary); font-weight: 300;">Ready-to-post Reels that outshine the competition.</p>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-value">120</span>
+                    <span class="stat-label">Story Assets</span>
+                    <p style="font-size: 0.9rem; color: var(--text-secondary); font-weight: 300;">High-engagement sequences for daily presence.</p>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-value">4</span>
+                    <span class="stat-label">Authority Drops</span>
+                    <p style="font-size: 0.9rem; color: var(--text-secondary); font-weight: 300;">Vetted influencer partnerships for rapid growth.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Slide 10: The ROI & Closing -->
+    <section class="slide" id="slide-9">
+        <div class="slide-content" style="text-align: center; align-items: center;">
+            <span class="label reveal">The Final Frame</span>
+            <h2 class="reveal stagger-1" style="font-size: var(--title-size);">Legacy is <em>Built</em>, <br>Not Borrowed</h2>
+            <div class="divider reveal stagger-2"></div>
+            
+            <p class="reveal stagger-3" style="max-width: 800px; color: var(--text-secondary); margin-top: 2rem; margin-left: auto; margin-right: auto; line-height: 2; font-weight: 300; font-size: 1.2rem;">SK Hair Salon is ready for its next chapter. While others chase followers, we build influence. While others post, we publish. Are you ready to command the digital conversation?</p>
+
+            <button class="cta-button reveal stagger-4">Claim Your Authority</button>
+        </div>
+    </section>
+
+    <script>
+        // === INTERSECTION OBSERVER FOR ANIMATIONS ===
+        const observerOptions = {
+            threshold: 0.3
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    const slideId = entry.target.id.split('-')[1];
+                    updateDots(slideId);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.slide').forEach(slide => {
+            observer.observe(slide);
+        });
+
+        // === NAVIGATION DOTS ===
+        const dots = document.querySelectorAll('.dot');
+        function updateDots(activeIndex) {
+            dots.forEach((dot, index) => {
+                if (index == activeIndex) {
+                    dot.classList.add('active');
+                } else {
+                    dot.classList.remove('active');
+                }
+            });
+        }
+
+        dots.forEach(dot => {
+            dot.addEventListener('click', () => {
+                const slideId = dot.getAttribute('data-slide');
+                document.getElementById(`slide-${slideId}`).scrollIntoView({ behavior: 'smooth' });
+            });
+        });
+
+        // === KEYBOARD NAVIGATION ===
+        window.addEventListener('keydown', (e) => {
+            const slides = document.querySelectorAll('.slide');
+            let currentSlide = 0;
+            slides.forEach((slide, index) => {
+                const rect = slide.getBoundingClientRect();
+                if (rect.top >= -50 && rect.top <= 50) currentSlide = index;
+            });
+
+            if (e.key === 'ArrowDown' || e.key === 'ArrowRight' || e.key === ' ') {
+                e.preventDefault();
+                if (currentSlide < slides.length - 1) {
+                    slides[currentSlide + 1].scrollIntoView({ behavior: 'smooth' });
+                }
+            } else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
+                e.preventDefault();
+                if (currentSlide > 0) {
+                    slides[currentSlide - 1].scrollIntoView({ behavior: 'smooth' });
+                }
+            }
+        });
+    </script>
 </body>
 </html>
